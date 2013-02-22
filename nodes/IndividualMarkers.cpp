@@ -35,9 +35,9 @@
 */
 
 
-#include "CvTestbed.h"
-#include "MarkerDetector.h"
-#include "Shared.h"
+#include "ar_track_alvar/CvTestbed.h"
+#include "ar_track_alvar/MarkerDetector.h"
+#include "ar_track_alvar/Shared.h"
 #include <cv_bridge/cv_bridge.h>
 #include <ar_track_alvar/AlvarMarker.h>
 #include <ar_track_alvar/AlvarMarkers.h>
@@ -82,7 +82,7 @@ void draw3dPoints(ARCloud::Ptr cloud, string frame, int color, int id, double ra
   visualization_msgs::Marker rvizMarker;
 
   rvizMarker.header.frame_id = frame;
-  rvizMarker.header.stamp = ros::Time::now(); 
+  rvizMarker.header.stamp = ros::Time::now();
   rvizMarker.id = id;
   rvizMarker.ns = "3dpts";
   
