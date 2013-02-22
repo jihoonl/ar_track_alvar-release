@@ -15,6 +15,7 @@ find_package(catkin COMPONENTS
         resource_retriever
         cv_bridge
         pcl_ros
+        message_generation
         ${MSG_DEPS}
         REQUIRED)
 
@@ -31,10 +32,12 @@ generate_messages(DEPENDENCIES ${MSG_DEPS})
 
 catkin_package(
   INCLUDE_DIRS include
+  LIBRARIES ar_track_alvar
   CATKIN_DEPENDS
         std_msgs
         roscpp
         tf
+        message_runtime
         image_transport
         sensor_msgs
         geometry_msgs
@@ -44,7 +47,7 @@ catkin_package(
         pcl_ros
 )
 
-include_directories(include
+include_directories(include 
                     ${PC_LIBOPENNI_INCLUDE_DIRS}
                     ${catkin_INCLUDE_DIRS}
                     ${OpenCV_INCLUDE_DIRS}
@@ -54,6 +57,7 @@ include_directories(include
 
 add_library(ar_track_alvar
     src/Camera.cpp
+    src/CaptureDevice.cpp
     src/Pose.cpp
     src/Marker.cpp
     src/MarkerDetector.cpp
@@ -77,6 +81,7 @@ add_library(ar_track_alvar
     src/Util.cpp
     src/Filter.cpp
     src/Kalman.cpp
+    src/kinect_filtering.cpp
     src/Optimization.cpp
     src/MultiMarker.cpp
     src/MultiMarkerBundle.cpp
@@ -89,31 +94,31 @@ target_link_libraries(kinect_filtering ${catkin_LIBRARIES})
 add_library(medianFilter src/medianFilter.cpp)
 target_link_libraries(medianFilter ${catkin_LIBRARIES})
 
-set(ALVAR_TARGETS individualMarkers individualMarkersNoKinect trainMarkerBundle findMarkerBundles findMarkerBundlesNoKinect createMarker ar_track_alvar)
+set(ALVAR_TARGETS ar_track_alvar individualMarkers individualMarkersNoKinect trainMarkerBundle findMarkerBundles findMarkerBundlesNoKinect createMarker ar_track_alvar)
 
 add_executable(individualMarkers nodes/IndividualMarkers.cpp)
 target_link_libraries(individualMarkers ar_track_alvar kinect_filtering ${catkin_LIBRARIES})
-add_dependencies(individualMarkers ${PROJECT_NAME}_generate_messages)
+add_dependencies(individualMarkers ${PROJECT_NAME}_gencpp)
 
 add_executable(individualMarkersNoKinect nodes/IndividualMarkersNoKinect.cpp)
 target_link_libraries(individualMarkersNoKinect ar_track_alvar ${catkin_LIBRARIES})
-add_dependencies(individualMarkersNoKinect ${PROJECT_NAME}_generate_messages)
+add_dependencies(individualMarkersNoKinect ${PROJECT_NAME}_gencpp)
 
 add_executable(trainMarkerBundle nodes/TrainMarkerBundle.cpp)
 target_link_libraries(trainMarkerBundle ar_track_alvar ${catkin_LIBRARIES})
-add_dependencies(trainMarkerBundle ${PROJECT_NAME}_generate_messages)
+add_dependencies(trainMarkerBundle ${PROJECT_NAME}_gencpp)
 
 add_executable(findMarkerBundles nodes/FindMarkerBundles.cpp)
 target_link_libraries(findMarkerBundles ar_track_alvar kinect_filtering medianFilter ${catkin_LIBRARIES})
-add_dependencies(findMarkerBundles ${PROJECT_NAME}_generate_messages)
+add_dependencies(findMarkerBundles ${PROJECT_NAME}_gencpp)
 
 add_executable(findMarkerBundlesNoKinect nodes/FindMarkerBundlesNoKinect.cpp)
 target_link_libraries(findMarkerBundlesNoKinect ar_track_alvar ${catkin_LIBRARIES})
-add_dependencies(findMarkerBundlesNoKinect ${PROJECT_NAME}_generate_messages)
+add_dependencies(findMarkerBundlesNoKinect ${PROJECT_NAME}_gencpp)
 
 add_executable(createMarker src/SampleMarkerCreator.cpp)
 target_link_libraries(createMarker ar_track_alvar ${catkin_LIBRARIES})
-add_dependencies(createMarker ${PROJECT_NAME}_generate_messages)
+add_dependencies(createMarker ${PROJECT_NAME}_gencpp)
 
 install(TARGETS ${ALVAR_TARGETS}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
@@ -121,3 +126,6 @@ install(TARGETS ${ALVAR_TARGETS}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
