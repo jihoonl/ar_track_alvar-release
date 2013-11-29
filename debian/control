@@ -1,0 +1,12 @@
+Source: ros-hydro-ar-track-alvar
+Section: misc
+Priority: extra
+Maintainer: Scott Niekum <sniekum@cs.umass.edu>
+Build-Depends: debhelper (>= 7.0.50~), libtinyxml-dev, ros-hydro-catkin, ros-hydro-cv-bridge, ros-hydro-dynamic-reconfigure, ros-hydro-geometry-msgs, ros-hydro-image-transport, ros-hydro-message-generation, ros-hydro-pcl-conversions, ros-hydro-pcl-ros, ros-hydro-resource-retriever, ros-hydro-roscpp, ros-hydro-rospy, ros-hydro-sensor-msgs, ros-hydro-std-msgs, ros-hydro-tf, ros-hydro-tf2, ros-hydro-visualization-msgs
+Homepage: http://ros.org/wiki/ar_track_alvar
+Standards-Version: 3.9.2
+
+Package: ros-hydro-ar-track-alvar
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libtinyxml-dev, ros-hydro-cv-bridge, ros-hydro-dynamic-reconfigure, ros-hydro-geometry-msgs, ros-hydro-image-transport, ros-hydro-message-runtime, ros-hydro-pcl-conversions, ros-hydro-pcl-ros, ros-hydro-resource-retriever, ros-hydro-roscpp, ros-hydro-rospy, ros-hydro-sensor-msgs, ros-hydro-std-msgs, ros-hydro-tf, ros-hydro-tf2, ros-hydro-visualization-msgs
+Description: This package is a ROS wrapper for Alvar, an open source AR tag tracking library.
